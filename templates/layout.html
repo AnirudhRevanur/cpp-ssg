@@ -3,22 +3,15 @@
   <head>
   <meta charset="utf-8">
     <title>{{title}}</title>
-    <style>
-      body {
-        background: black;
-        color: white;
-        font-family: sans-serif;
-        padding: 40px;
-      }
-      h1, h2, h3 {
-        color: cyan;
-      }
-    </style>
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
+    <div class="toc-container">
+      {{toc}}
+    </div>
     {{content}}
     <hr>
-    <div>
+    <div class="navigation-menu">
       {{navigation}}
     </div>
   </body>

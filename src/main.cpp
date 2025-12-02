@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cctype>
 #include <cstddef>
 #include <cstring>
 #include <filesystem>
@@ -15,7 +16,14 @@ namespace fs = std::filesystem;
 struct Post {
   string title;
   string filename;
+  string tocHtml;
   string htmlContent;
+};
+
+struct Heading {
+  int level;
+  string text;
+  string id;
 };
 
 struct Frontmatter {
@@ -24,6 +32,70 @@ struct Frontmatter {
   string date = "";
   bool draft = false;
 };
+
+string kebabThisShit(const string &s) {
+  string out;
+  for (char c : s) {
+    if (isalnum(c))
+      out += tolower(c);
+
+    else if (c == ' ')
+      out += '-';
+  }
+
+  return out;
+}
+
+vector<Heading> extractHeadings(string &markdown) {
+  vector<Heading> list;
+  istringstream ss(markdown);
+  string out, line;
+
+  while (getline(ss, line)) {
+    size_t level = 0;
+
+    while (level < line.size() && line[level] == '#')
+      level++;
+
+    if (level > 0 && line.size() > level + 1) {
+      string text = line.substr(level + 1);
+      string id = kebabThisShit(text);
+
+      list.push_back({(int)level, text, id});
+
+      out += "<h" + to_string(level) + " id=\"" + id + "\">" + text + "</h" +
+             to_string(level) + ">\n";
+    } else {
+      out += line + "\n";
+    }
+  }
+
+  markdown = out;
+  return list;
+}
+
+string buildTOC(const vector<Heading> &list) {
+  if (list.empty())
+    return "";
+
+  string html = "<div class=\"toc\">\n<h2>Table of Contents</h2>\n<ul>\n";
+
+  int lastLevel = 1;
+
+  for (auto &h : list) {
+    if (h.level > lastLevel)
+      html += "<ul>\n";
+    else if (h.level < lastLevel)
+      html += "</ul>\n";
+
+    html += "<li><a href=\"#" + h.id + "\">" + h.text + "</a></li>\n";
+
+    lastLevel = h.level;
+  }
+
+  html += "</ul>\n</div>\n";
+  return html;
+}
 
 Frontmatter parseFrontmatter(const string &text, string &bodyOut) {
   Frontmatter fm;
@@ -75,6 +147,25 @@ string readFile(const string &path) {
   return ss.str();
 }
 
+void generateIndexPage(const vector<Post> &posts, const string &indexLayout) {
+  stringstream content;
+
+  for (auto &p : posts) {
+    content << "<div class=\"post-card\">"
+            << "<h3><a href=\"" << p.filename << "\">" << p.title << "</a></h3>"
+            << "</div>\n";
+  }
+
+  string page = indexLayout;
+
+  size_t pos = page.find("{{content}}");
+  if (pos != string::npos)
+    page.replace(pos, strlen("{{content}}"), content.str());
+
+  ofstream out("dist/index.html");
+  out << page;
+}
+
 int main(int argc, char **argv) {
   vector<Post> posts;
   string postLayout = readFile("templates/layout.html");
@@ -88,12 +179,15 @@ int main(int argc, char **argv) {
     string mdBody;
     Frontmatter fm = parseFrontmatter(md, mdBody);
 
+    vector<Heading> tocList = extractHeadings(mdBody);
+    string tocHtml = buildTOC(tocList);
+
     string html;
     md_html(mdBody.c_str(), mdBody.size(), md_output_callback, &html, 0, 0);
 
     string outname = entry.path().stem().string() + ".html";
 
-    posts.push_back({fm.title, outname, html});
+    posts.push_back({fm.title, outname, tocHtml, html});
   }
 
   std::sort(posts.begin(), posts.end(), [](const Post &a, const Post &b) {
@@ -131,29 +225,16 @@ int main(int argc, char **argv) {
     if (p != string::npos)
       page.replace(p, strlen("{{navigation}}"), nav);
 
+    p = page.find("{{toc}}");
+    if (p != string::npos)
+      page.replace(p, strlen("{{toc}}"), posts[i].tocHtml);
+
     ofstream fout("dist/" + posts[i].filename);
     fout << page;
     fout.close();
   }
 
-  stringstream indexContent;
-  indexContent << "<ul>\n";
-  for (auto &p : posts) {
-    indexContent << "<li><a href=\"" << p.filename << "\">" << p.title
-                 << "</a></li>\n";
-  }
-
-  indexContent << "</ul>\n";
-
-  string indexPage = indexLayout;
-
-  size_t a = indexPage.find("{{content}}");
-  if (a != string::npos)
-    indexPage.replace(a, strlen("{{content}}"), indexContent.str());
-
-  ofstream indexOut("dist/index.html");
-  indexOut << indexPage;
-  indexOut.close();
+  generateIndexPage(posts, indexLayout);
 
   return 0;
 }

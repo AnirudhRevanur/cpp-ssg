@@ -5,10 +5,13 @@ LDFLAGS := -lmd4c -lmd4c-html
 SRC := $(wildcard src/*.cpp)
 BIN := dist/md2html
 
-all: $(BIN)
+all: $(BIN) styles
 
 $(BIN): $(SRC) | dist
 	$(CXX) $(CXXFLAGS)  -o $@ $(SRC) $(LDFLAGS)
+
+styles: | dist
+	cp templates/styles.css dist/styles.css
 
 dist:
 	mkdir -p dist
