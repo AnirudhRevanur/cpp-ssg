@@ -80,20 +80,27 @@ string buildTOC(const vector<Heading> &list) {
 
   string html = "<div class=\"toc\">\n<h2>Table of Contents</h2>\n<ul>\n";
 
-  int lastLevel = 1;
+  int lastLevel = 0;
 
   for (auto &h : list) {
-    if (h.level > lastLevel)
+    while (h.level > lastLevel) {
       html += "<ul>\n";
-    else if (h.level < lastLevel)
+      lastLevel++;
+    }
+    while (h.level < lastLevel) {
       html += "</ul>\n";
+      lastLevel--;
+    }
 
     html += "<li><a href=\"#" + h.id + "\">" + h.text + "</a></li>\n";
-
-    lastLevel = h.level;
   }
 
-  html += "</ul>\n</div>\n";
+  while (lastLevel > 0) {
+    html += "</ul>\n";
+    lastLevel--;
+  }
+
+  html += "</div>\n";
   return html;
 }
 
