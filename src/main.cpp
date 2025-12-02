@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstddef>
 #include <cstring>
 #include <filesystem>
@@ -14,6 +15,7 @@ namespace fs = std::filesystem;
 struct Post {
   string title;
   string filename;
+  string htmlContent;
 };
 
 struct Frontmatter {
@@ -89,22 +91,49 @@ int main(int argc, char **argv) {
     string html;
     md_html(mdBody.c_str(), mdBody.size(), md_output_callback, &html, 0, 0);
 
+    string outname = entry.path().stem().string() + ".html";
+
+    posts.push_back({fm.title, outname, html});
+  }
+
+  std::sort(posts.begin(), posts.end(), [](const Post &a, const Post &b) {
+    return a.filename < b.filename;
+  });
+
+  for (size_t i = 0; i < posts.size(); i++) {
+    string nav;
+
+    if (i > 0) {
+      nav += "<a href=\"" + posts[i - 1].filename + "\">← " +
+             posts[i - 1].title + "</a>";
+    }
+
+    if (!nav.empty())
+      nav += " | ";
+    nav += "<a href=\"index.html\">Home</a>";
+
+    if (i + 1 < posts.size()) {
+      nav += " | <a href=\"" + posts[i + 1].filename + "\">" +
+             posts[i + 1].title + " →</a>";
+    }
+
     string page = postLayout;
 
     size_t p = page.find("{{content}}");
     if (p != string::npos)
-      page.replace(p, strlen("{{content}}"), html);
+      page.replace(p, strlen("{{content}}"), posts[i].htmlContent);
 
     p = page.find("{{title}}");
     if (p != string::npos)
-      page.replace(p, strlen("{{title}}"), fm.title);
+      page.replace(p, strlen("{{title}}"), posts[i].title);
 
-    string outname = entry.path().stem().string() + ".html";
-    ofstream fout("dist/" + outname);
+    p = page.find("{{navigation}}");
+    if (p != string::npos)
+      page.replace(p, strlen("{{navigation}}"), nav);
+
+    ofstream fout("dist/" + posts[i].filename);
     fout << page;
     fout.close();
-
-    posts.push_back({fm.title, outname});
   }
 
   stringstream indexContent;
