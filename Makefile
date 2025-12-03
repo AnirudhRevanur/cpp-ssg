@@ -18,3 +18,6 @@ dist:
 
 clean:
 	rm -rf dist/*
+
+build: all
+	./$(BIN)
