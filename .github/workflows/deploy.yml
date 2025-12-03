@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y g++ make libmd4c-dev libmd4c-html
+          sudo apt-get install -y g++ make libmd4c-dev libmd4c-html0-dev
 
       - name: Build site
         run: make build
