@@ -49,7 +49,7 @@ string kebabThisShit(const string &s) {
 vector<Heading> extractHeadings(string &markdown) {
   vector<Heading> list;
   istringstream ss(markdown);
-  string out, line;
+  string line;
 
   while (getline(ss, line)) {
     size_t level = 0;
@@ -62,15 +62,9 @@ vector<Heading> extractHeadings(string &markdown) {
       string id = kebabThisShit(text);
 
       list.push_back({(int)level, text, id});
-
-      out += "<h" + to_string(level) + " id=\"" + id + "\">" + text + "</h" +
-             to_string(level) + ">\n";
-    } else {
-      out += line + "\n";
     }
   }
 
-  markdown = out;
   return list;
 }
 
@@ -191,6 +185,17 @@ int main(int argc, char **argv) {
 
     string html;
     md_html(mdBody.c_str(), mdBody.size(), md_output_callback, &html, 0, 0);
+
+    for (auto &h : tocList) {
+      string needle = "<h" + to_string(h.level) + ">";
+      string replacement = "<h" + to_string(h.level) + " id=\"" + h.id + "\">";
+
+      size_t pos = 0;
+      while ((pos = html.find(needle, pos)) != string::npos) {
+        html.replace(pos, needle.length(), replacement);
+        pos += replacement.length();
+      }
+    }
 
     string outname = entry.path().stem().string() + ".html";
 
