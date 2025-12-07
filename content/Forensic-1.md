@@ -198,12 +198,12 @@ _Tip: If you are not sure what disk is what, then open **`guymager`** first with
 
 1. In the **`Guymager`** interface, click on the device that has to be imaged
 
-![Idle Guymager](/static/images/Forensic-1/idle.png)
+![Idle Guymager](images/Forensic-1/idle.png)
 
 In this case, **`/dev/nvme0n1`** is the name of my local SSD and **`dev/sda`** is the USB drive that I have to make an image of
 
 2. Right click on the device and choose **`Acquire Image`**
-   ![Acquire UI](/static/images/Forensic-1/AcquireUI.png)
+   ![Acquire UI](images/Forensic-1/AcquireUI.png)
 
 This is the UI that will pop up after clicking on **`Acquire Image`**
 
@@ -214,7 +214,7 @@ This is the UI that will pop up after clicking on **`Acquire Image`**
    - Select and verify the validity of the image with the hash algorithms **`MD5`**, **`SHA-1`** and **`SHA-256`**
 
 4. Click **`Start`** to begin the imaging process - A progress bar will appear at the disk to show how much has been done
-   ![Progress Bar](/static/images/Forensic-1/progress.png)
+   ![Progress Bar](images/Forensic-1/progress.png)
 
 **Step 3: Verify the Image**
 Once the imaging process is complete, you can tell **`Guymager`** to verify the image or you can just have it calculate the hash values.
