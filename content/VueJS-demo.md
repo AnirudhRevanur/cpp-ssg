@@ -1,6 +1,6 @@
 ---
 title: How to make an application with VueJS
-date: '2024-11-19'
+date: 2024-11-19
 language: 'en'
 tags: ['Blog', 'VueJS', 'Web Development']
 draft: false

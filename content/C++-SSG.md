@@ -1,6 +1,6 @@
 ---
 title: Writing my own Static Site Generator in C++
-date: '13-12-2025'
+date: 2025-12-13
 language: 'en'
 tags: ['Blog', 'C++', 'SSG']
 draft: false

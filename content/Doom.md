@@ -1,6 +1,6 @@
 ---
 title: Evolution of DOOM
-date: '2025-01-22'
+date: 2025-01-22
 language: 'en'
 tags: ['Blog', 'Video Games', 'Doom']
 draft: false

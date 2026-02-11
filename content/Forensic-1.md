@@ -1,6 +1,6 @@
 ---
 title: Digital Forensic Investigation and Tools
-date: '2024-12-29'
+date: 2024-12-29
 language: 'en'
 tags: ['Blog', 'Forensics', 'DFIR']
 draft: false

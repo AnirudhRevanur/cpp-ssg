@@ -1,6 +1,6 @@
 ---
 title: Git It Done
-date: '2025-07-10'
+date: 2025-07-10
 language: 'en'
 tags: ['Blog', 'Git', 'Guide']
 draft: true

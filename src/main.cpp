@@ -16,6 +16,7 @@ namespace fs = std::filesystem;
 struct Post {
   string title;
   string filename;
+  string date;
   string tocHtml;
   string htmlContent;
 };
@@ -178,7 +179,10 @@ int main(int argc, char **argv) {
 
     string md = readFile(entry.path().string());
     string mdBody;
+
     Frontmatter fm = parseFrontmatter(md, mdBody);
+    if (fm.draft)
+      continue;
 
     vector<Heading> tocList = extractHeadings(mdBody);
     string tocHtml = buildTOC(tocList);
@@ -199,12 +203,11 @@ int main(int argc, char **argv) {
 
     string outname = entry.path().stem().string() + ".html";
 
-    posts.push_back({fm.title, outname, tocHtml, html});
+    posts.push_back({fm.title, outname, fm.date, tocHtml, html});
   }
 
-  std::sort(posts.begin(), posts.end(), [](const Post &a, const Post &b) {
-    return a.filename < b.filename;
-  });
+  std::sort(posts.begin(), posts.end(),
+            [](const Post &a, const Post &b) { return a.date > b.date; });
 
   for (size_t i = 0; i < posts.size(); i++) {
     string nav;
