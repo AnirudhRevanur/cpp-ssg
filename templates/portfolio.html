@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>~/home</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body class="tron-grid">
+
+    {{nav}}
+
+    <!-- HERO -->
+    <section class="hero tron-panel">
+      <div class="hero-inner">
+        <p class="hero-prompt">whoami</p>
+        <h1 class="hero-name glow">Anirudh Revanur</h1>
+        <p class="hero-tagline">
+          Software developer. I build things, break things, and write about it.
+        </p>
+        <div class="hero-links">
+          <a href="https://github.com/AnirudhRevanur" class="btn-outline">GitHub</a>
+          <a href="mailto:revanur.anirudh@gmail.com"         class="btn-outline">Email</a>
+          <a href="blog/index.html"                class="btn-outline">Blog</a>
+        </div>
+      </div>
+    </section>
+
+    <hr class="neon-divider">
+
+    <!-- SKILLS -->
+    <section class="section">
+      <h2 class="glow section-heading">// skills</h2>
+      <div class="skills-grid">
+
+        <div class="skill-group tron-panel">
+          <h3>Languages</h3>
+          <ul>
+            <li>C / C++</li>
+            <li>Python</li>
+            <li>Bash</li>
+            <li>TypeScript</li>
+            <li>Rust</li>
+          </ul>
+        </div>
+
+        <div class="skill-group tron-panel">
+          <h3>Tools &amp; Infra</h3>
+          <ul>
+            <li>Git / GitHub</li>
+            <li>Linux (Arch btw)</li>
+            <li>Docker</li>
+            <li>Make / CMake</li>
+          </ul>
+        </div>
+
+        <div class="skill-group tron-panel">
+          <h3>Interests</h3>
+          <ul>
+            <li>Security &amp; CTFs</li>
+            <li>Retro tech</li>
+            <li>Systems programming</li>
+            <li>Compilers &amp; tooling</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <hr class="neon-divider">
+
+    <!-- PROJECTS -->
+    <section class="section">
+      <h2 class="glow section-heading">// projects</h2>
+      <div class="projects-grid">
+
+        <div class="project-card tron-panel">
+          <div class="project-header">
+            <h3><a href="https://github.com/AnirudhRevanur/cpp-ssg">Static Site Generator</a></h3>
+            <span class="project-lang">C++</span>
+          </div>
+          <p class="tron-content">
+            A custom static site generator written in C++17. Parses Markdown
+            via md4c, generates a full blog with TOC, frontmatter, and post
+            navigation. No dependencies beyond the standard library and md4c.
+          </p>
+        </div>
+
+        <div class="project-card tron-panel">
+          <div class="project-header">
+            <h3><a href="https://github.com/OSPI-26/forensic-arch-iso">project-two</a></h3>
+            <span class="project-lang">ArchISO</span>
+          </div>
+          <p class="tron-content">
+            A workflow-first take on how an Operating System should be a tool
+            that simplifies how Forensic Investigation has to take place.
+          </p>
+        </div>
+
+        <div class="project-card tron-panel">
+          <div class="project-header">
+            <h3><a href="https://github.com/AnirudhRevanur/rsa-tool">project-three</a></h3>
+            <span class="project-lang">TypeScript</span>
+          </div>
+          <p class="tron-content">
+            An insecure implementation of RSA written in TypeScript that
+            was used in academic settings to show how Public Key Infrastructure works
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <hr class="neon-divider">
+
+    <footer class="site-footer">
+      <span>built with a custom C++ SSG</span>
+      <span>&mdash;</span>
+      <a href="https://github.com/AnirudhRevanur/cpp-ssg">source</a>
+    </footer>
+
+  </body>
+</html>

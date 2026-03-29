@@ -18,7 +18,7 @@ static: | dist
 	cp -r static/* dist/
 
 dist:
-	mkdir -p dist
+	mkdir -p dist dist/blog
 
 clean:
 	rm -rf dist/*
